@@ -7,9 +7,9 @@
 * Our strategy is a directional trading strategy.
 * The direction of the price trend is determined by the following method:
   1. Precompute the moving average (MV) and moving standard deviation (MSD).
-  2. If the closing price is in the range \([MV + \text{threshold}_2 \times MSD, MV + \text{threshold}_1 \times MSD]\), we predict the trend will go down.
-  3. Else if the closing price is in the range \([MV - \text{threshold}_1 \times MSD, MV - \text{threshold}_2 \times MSD]\), we predict the trend will go up.
-  4. Else if the closing price is greater than \(MV + \text{threshold}_1 \times MSD\) or less than \(MV - \text{threshold}_1 \times MSD\), we stop loss.
+  2. If the closing price is in the range $[MV + \text{threshold}_2 \times MSD, MV + \text{threshold}_1 \times MSD]$, we predict the trend will go down.
+  3. Else if the closing price is in the range $[MV - \text{threshold}_1 \times MSD, MV - \text{threshold}_2 \times MSD]$, we predict the trend will go up.
+  4. Else if the closing price is greater than $MV + \text{threshold}_1 \times MSD$ or less than $MV - \text{threshold}_1 \times MSD$, we stop loss.
 * We long/short the spot based on the predicted direction and sell the spot when taking profit or stopping loss is required.
 * The intuition behind this strategy is that we assume the closing price exhibits a "mean reversion" behavior.
 
@@ -36,4 +36,3 @@ To run **ML_CTA**, execute the following commands:
 ```sh
 cd ML_CTA
 make all
-```
