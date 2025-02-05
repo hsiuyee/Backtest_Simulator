@@ -75,7 +75,8 @@ def backtesting(df):
             short_entry_price = df.at[i, 'Close']
 
     if buy_position[len(df)-2] == True:
-        stop_loss = (long_entry_price - df.at[i, 'Close']) * lot
+        fee = df.at[len(df)-1, 'Close'] * lot * fee_rate
+        stop_loss = (long_entry_price - df.at[i, 'Close']) * lot + fee
         balance -= stop_loss
         buy_position[len(df)-1] = None
         exit_price = df.at[len(df)-1, 'Close']
@@ -83,7 +84,8 @@ def backtesting(df):
         pnl[len(df)-1] += - stop_loss
         long_entry_price = df.at[i, 'Close']
     if sell_position[len(df)-2] == True:
-        stop_loss = (df.at[len(df)-1, 'Close'] - short_entry_price) * lot
+        fee = df.at[len(df)-1, 'Close'] * lot * fee_rate
+        stop_loss = (df.at[len(df)-1, 'Close'] - short_entry_price) * lot + fee
         balance -= stop_loss
         sell_position[len(df)-1] = None
         exit_price = df.at[len(df)-1, 'Close']
