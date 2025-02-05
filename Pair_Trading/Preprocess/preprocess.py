@@ -1,14 +1,14 @@
 import pandas as pd
 
 # Define file names and headers
-kline_file_path = 'kline.csv'
+kline_file_path = 'ETH_kline.csv'
 kline_columns = [
     "Open time", "Open", "High", "Low", "Close", "Volume",
     "Close time", "Quote asset volume", "Number of trades",
     "Taker buy base asset volume", "Taker buy quote asset volume", "Ignore", "symbol"
 ]
 
-trades_file_path = 'trades.csv'
+trades_file_path = 'ETH_trades.csv'
 trades_columns = [
     "trade Id", "price", "qty", "quoteQty", "time",
     "isBuyerMaker", "isBestMatch", "symbol"
