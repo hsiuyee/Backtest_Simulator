@@ -23,7 +23,7 @@ def prepare_features(df):
     :return: X (特徵矩陣), y (預測目標)
     """
     features = [
-        # 'Open', 'High', 'Low', 'Close', 'Volume',
+        'Open', 'High', 'Low', 'Close', 'Volume',
                 # 'Taker buy base asset volume', 'Taker buy quote asset volume', 
                 'Rolling_Std_Close', 'Rolling_Mean_Close', 'ATR']
     # features = ['Rolling_Std_Close']
@@ -72,7 +72,7 @@ def get_direction(df, threshold=0.05):
 
 if __name__ == "__main__":
     file_path = "klines_BTC_factors.csv"
-    N = 24 * 10
+    N = 1
 
     # 讀取數據
     df = load_data(file_path, N)
