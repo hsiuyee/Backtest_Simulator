@@ -85,9 +85,9 @@ def fetch_kline_price_data(symbol, interval, start_date, end_date):
 if __name__ == '__main__':
   # symbols
   symbols = ['BTCUSDT']
-  interval = '1h'
-  start_date = '2024-01-01'
-  end_date = '2024-11-30'
+  interval = '4h'
+  start_date = '2021-01-01'
+  end_date = '2025-3-24'
 
   # merge to DataFrame
   all_data = []

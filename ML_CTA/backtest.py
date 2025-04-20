@@ -16,6 +16,9 @@ def backtesting(df):
     pnl = [0] * len(df)
     fee_rate = 0.01 * 0.1 # 0.5%
 
+    buy_signal_cnt = 0
+    sell_signal_cnt = 0
+
     for i in range(1, len(df)-1):
         signals[i] = 0
         buy_signals[i] = 0
@@ -23,10 +26,17 @@ def backtesting(df):
         buy_position[i] = buy_position[i-1]
         sell_position[i] = sell_position[i-1]
 
+        if df.at[i, 'direction'] == 1:
+            buy_signal_cnt = buy_signal_cnt + 1
+            sell_signal_cnt = 0
+        if df.at[i, 'direction'] == -1:
+            sell_signal_cnt = sell_signal_cnt + 1
+            buy_signal_cnt = 0
+
         # long, take profit and stop loss
-        if buy_position[i] == True:
+        if df.at[i, 'direction'] == -1  and buy_position[i] == True:
             # take profit (trend, reversion)
-            if df.at[i, 'Close'] >= long_entry_price + 7 * df.at[i, 'ATR']:
+            if df.at[i, 'Close'] >= long_entry_price + 9 * df.at[i, 'ATR']:
                 fee = df.at[i, 'Close'] * lot * fee_rate
                 take_profit = (df.at[i, 'Close'] - long_entry_price) * lot - fee
                 balance += take_profit
@@ -35,7 +45,7 @@ def backtesting(df):
                 exit_prices[i] = exit_price
                 pnl[i] = take_profit
             # stop loss
-            elif df.at[i, 'Close'] <= long_entry_price - 4 * df.at[i, 'ATR']:
+            elif df.at[i, 'Close'] <= long_entry_price - 3 * df.at[i, 'ATR']:
                 fee = df.at[i, 'Close'] * lot * fee_rate
                 stop_loss = (long_entry_price - df.at[i, 'Close']) * lot + fee
                 balance -= stop_loss
@@ -47,7 +57,7 @@ def backtesting(df):
         # short, take profit and stop loss
         if sell_position[i] == True:
             # take profit (trend, reversion)
-            if df.at[i, 'Close'] <= short_entry_price - 7 * df.at[i, 'ATR']:
+            if df.at[i, 'direction'] == 1  and df.at[i, 'Close'] <= short_entry_price - 9 * df.at[i, 'ATR']:
                 fee = df.at[i, 'Close'] * lot * fee_rate
                 take_profit = (short_entry_price - df.at[i, 'Close']) * lot - fee
                 balance += take_profit
@@ -56,7 +66,7 @@ def backtesting(df):
                 exit_prices[i] = exit_price
                 pnl[i] = take_profit
             # stop loss
-            elif df.at[i, 'Close'] >= short_entry_price + 4 * df.at[i, 'ATR']:
+            elif df.at[i, 'Close'] >= short_entry_price + 3 * df.at[i, 'ATR']:
                 fee = df.at[i, 'Close'] * lot * fee_rate
                 stop_loss = (df.at[i, 'Close'] - short_entry_price) * lot + fee
                 balance -= stop_loss
@@ -65,11 +75,11 @@ def backtesting(df):
                 exit_prices[i] = exit_price
                 pnl[i] = - stop_loss
 
-        if df.at[i, 'direction'] == 1 and buy_position[i] == None:
+        if buy_signal_cnt > 4 and buy_position[i] == None:
             buy_signals[i] = 1
             buy_position[i] = True
             long_entry_price = df.at[i, 'Close']
-        if df.at[i, 'direction'] == -1 and sell_position[i] == None:
+        if sell_signal_cnt > 4 and sell_position[i] == None:
             sell_signals[i] = 1
             sell_position[i] = True
             short_entry_price = df.at[i, 'Close']

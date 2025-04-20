@@ -5,7 +5,7 @@ file_path = "klines_BTC.csv"  # 請替換成你的檔案路徑
 df = pd.read_csv(file_path)
 
 # 設定 window_size
-window_size = 20
+window_size = 24
 
 # 計算滾動標準差 (Rolling Std)
 df["Rolling_Std_Close"] = df["Close"].rolling(window=window_size).std()

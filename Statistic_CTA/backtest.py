@@ -26,7 +26,7 @@ def backtesting(df):
         # long, take profit and stop loss
         if buy_position[i] == True:
             # take profit (trend, reversion)
-            if df.at[i, 'Close'] >= long_entry_price:
+            if df.at[i, 'direction'] == -1 and df.at[i, 'Close'] >= long_entry_price:
                 fee = df.at[i, 'Close'] * lot * fee_rate
                 take_profit = (df.at[i, 'Close'] - long_entry_price) * lot - fee
                 balance += take_profit
@@ -47,7 +47,7 @@ def backtesting(df):
         # short, take profit and stop loss
         if sell_position[i] == True:
             # take profit (trend, reversion)
-            if df.at[i, 'Close'] <= short_entry_price:
+            if df.at[i, 'direction'] == 1 and df.at[i, 'Close'] <= short_entry_price:
                 fee = df.at[i, 'Close'] * lot * fee_rate
                 take_profit = (short_entry_price - df.at[i, 'Close']) * lot - fee
                 balance += take_profit
@@ -74,23 +74,23 @@ def backtesting(df):
             sell_position[i] = True
             short_entry_price = df.at[i, 'Close']
 
-    if buy_position[len(df)-2] == True:
-        fee = df.at[len(df)-1, 'Close'] * lot * fee_rate
-        stop_loss = (long_entry_price - df.at[i, 'Close']) * lot + fee
-        balance -= stop_loss
-        buy_position[len(df)-1] = None
-        exit_price = df.at[len(df)-1, 'Close']
-        exit_prices[len(df)-1] = exit_price
-        pnl[len(df)-1] += - stop_loss
-        long_entry_price = df.at[i, 'Close']
-    if sell_position[len(df)-2] == True:
-        fee = df.at[len(df)-1, 'Close'] * lot * fee_rate
-        stop_loss = (df.at[len(df)-1, 'Close'] - short_entry_price) * lot + fee
-        balance -= stop_loss
-        sell_position[len(df)-1] = None
-        exit_price = df.at[len(df)-1, 'Close']
-        exit_prices[len(df)-1] = exit_price
-        pnl[len(df)-1] += - stop_loss
+    # if buy_position[len(df)-2] == True:
+    #     fee = df.at[len(df)-1, 'Close'] * lot * fee_rate
+    #     stop_loss = (long_entry_price - df.at[i, 'Close']) * lot + fee
+    #     balance -= stop_loss
+    #     buy_position[len(df)-1] = None
+    #     exit_price = df.at[len(df)-1, 'Close']
+    #     exit_prices[len(df)-1] = exit_price
+    #     pnl[len(df)-1] += - stop_loss
+    #     long_entry_price = df.at[i, 'Close']
+    # if sell_position[len(df)-2] == True:
+    #     fee = df.at[len(df)-1, 'Close'] * lot * fee_rate
+    #     stop_loss = (df.at[len(df)-1, 'Close'] - short_entry_price) * lot + fee
+    #     balance -= stop_loss
+    #     sell_position[len(df)-1] = None
+    #     exit_price = df.at[len(df)-1, 'Close']
+    #     exit_prices[len(df)-1] = exit_price
+    #     pnl[len(df)-1] += - stop_loss
     
     df['buy signal'] = buy_signals
     df['buy position'] = buy_position

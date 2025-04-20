@@ -8,7 +8,7 @@ pd.set_option('display.width', None)
 
 plt.style.use('dark_background')
 
-def get_direction(df, threshold1=4, threshold2=2):
+def get_direction(df, threshold1=4.5, threshold2=2):
     """
     根據價格突破均線標準差範圍來判定趨勢方向
     :param df: DataFrame, 必須包含 'Close', 'Rolling_Mean_Close', 'Rolling_Std_Close' 欄位
